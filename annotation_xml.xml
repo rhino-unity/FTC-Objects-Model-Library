@@ -1,0 +1,27 @@
+<annotation>
+    <filename>{%FILENAME%}</filename>
+    <folder>{%FOLDER%}</folder>
+    <source>
+        <database>{%FOLDER%}</database>
+        <annotation>custom</annotation>
+        <image>custom</image>
+    </source>
+    <size>
+        <width>{%IMG_X%}</width>
+        <height>{%IMG_Y%}</height>
+        <depth>3</depth>
+    </size>
+    <segmented>0</segmented>
+    <object>
+        <name>{%OBJ_NAME%}</name>
+        <pose>unspecified</pose>
+        <truncated>0</truncated>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>{%MIN_X%}</xmin>
+            <ymin>{%MIN_Y%}</ymin>
+            <xmax>{%MAX_X%}</xmax>
+            <ymax>{%MAX_Y%}</ymax>
+        </bndbox>
+    </object>
+</annotation>
