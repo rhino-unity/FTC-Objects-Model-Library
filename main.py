@@ -10,7 +10,7 @@ __basename__ = os.path.basename(__dirname__)
 JPEGImages_dir = os.path.join(__dirname__, "JPEGImages")
 Annotations_dir = os.path.join(__dirname__, "Annotations")
 ImageSets_dir = os.path.join(__dirname__, "ImageSets/Main")
-model_images_dir = os.path.join(__dirname__, "images")
+model_images_dir = os.path.join(__dirname__, "FTC-Images")
 
 labels_file = open('labels.txt', 'w')
 
@@ -31,8 +31,6 @@ trainval_file = open(os.path.join(ImageSets_dir, "trainval.txt"), 'a')
 print("============================= \n")
 
 print("Scanning ~ \n")
-
-
 
 class xml:
     _xml_string = open("annotation_xml.xml").read()
