@@ -12,8 +12,7 @@ Annotations_dir = os.path.join(__dirname__, "Annotations")
 ImageSets_dir = os.path.join(__dirname__, "ImageSets/Main")
 model_images_dir = os.path.join(__dirname__, "images")
 
-labels_file = open('labels.txt', 'a')
-labels_file.write('')
+labels_file = open('labels.txt', 'w')
 
 print("=============================")
 print("Configuration ~\n")
@@ -65,7 +64,9 @@ for folder in os.scandir(model_images_dir):
         objectname = folder.name
         model_dir = os.path.join(model_images_dir, folder.name)
 
-        labels_file.write(f"{folder.name}\n")
+        print(folder.name)
+        if not folder.name.startswith('.'):
+            labels_file.write(f"{folder.name}\n")
 
         """
         when getting an image;
