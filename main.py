@@ -85,10 +85,10 @@ for folder in os.scandir(model_images_dir):
                 imagename = filename.replace('.jpg', '')
 
                 image = Image.open(os.path.join(model_dir, file.name))
-                
+                image.size
                 # writing Annotation's XML File
-                # image_annotations_file = open(os.path.join(Annotations_dir, f"{imagename}.xml"), 'a')
-                # image_annotations_file.write(generateAnnotations(filename, __basename__, objectname, image.size, (0, image.size[1]), (0,  image.size[0])))
+                image_annotations_file = open(os.path.join(Annotations_dir, f"{imagename}.xml"), 'a')
+                image_annotations_file.write(generateAnnotations(filename, __basename__, objectname, image.size, (0, image.size[1]), (0,  image.size[0])))
 
                 # insert imagename onto trainval.txt
                 
@@ -108,7 +108,9 @@ vals = []
 for fn in list(sorted(os.listdir('JPEGImages'))):
     fn_no_ext = fn.split(".")[0]
     with open(f'Annotations/{fn_no_ext}.xml', 'w') as f:
-        f.write(xml.render(fn, __basename__, fn.split('_')[0]))
+        image = Image.open(os.path.join(JPEGImages_dir, fn))
+
+        f.write(xml.render(fn, __basename__, fn.split('-')[0], im_size=(image.size[0], image.size[1]), im_min=(1, 1), im_max=(image.size[0]-1, image.size[1]-1)))
     vals.append(fn_no_ext)
     print(f'\r{fn}', end='')
 
