@@ -57,14 +57,15 @@ class xml:
             return gen_xml
 
 # images > (folder)
+models = []
+
 for folder in os.scandir(model_images_dir):
     if folder.is_dir:
         objectname = folder.name
-        model_dir = os.path.join(model_images_dir, folder.name)
+        model_dir = os.path.join(model_images_dir, objectname)
+        models.append(folder.name)
 
-        print(folder.name)
-        if not folder.name.startswith('.'):
-            labels_file.write(f"{folder.name}\n")
+        print(f"Scan {folder.name} model..")
 
         """
         when getting an image;
@@ -72,35 +73,41 @@ for folder in os.scandir(model_images_dir):
         - it should generates xml file in Annotations folder
         - 
         """
-        for file in os.scandir(model_dir):
-            # when ferrubg 
-            if file.is_file:
-                
-                filename = f"{folder.name}-{file.name}"
-                # print(filename)
-                if filename.startswith('.'):
-                    continue
+        try:
+            for file in os.scandir(model_dir):
+                # when ferrubg 
+                if file.is_file:
+                    
+                    filename = f"{folder.name}-{file.name}"
+                    # print(filename)
+                    if filename.startswith('.'):
+                        continue
 
-                # a filename without the extension (jpg), used for generating Annotation's xml file
-                imagename = filename.replace('.jpg', '')
+                    # a filename without the extension (jpg), used for generating Annotation's xml file
+                    imagename = filename.replace('.jpg', '')
 
-                image = Image.open(os.path.join(model_dir, file.name))
-                image.size
-                # writing Annotation's XML File
-                image_annotations_file = open(os.path.join(Annotations_dir, f"{imagename}.xml"), 'a')
-                image_annotations_file.write(generateAnnotations(filename, __basename__, objectname, image.size, (0, image.size[1]), (0,  image.size[0])))
+                    image = Image.open(os.path.join(model_dir, file.name))
+                    
 
-                # insert imagename onto trainval.txt
-                
-                # trainval_file.write(imagename+'\n')
+                    # writing Annotation's XML File
+                    # image_annotations_file = open(os.path.join(Annotations_dir, f"{imagename}.xml"), 'a')
+                    # image_annotations_file.write(generateAnnotations(filename, __basename__, objectname, image.size, (0, image.size[1]), (0,  image.size[0])))
 
-                # print image
-                print(os.path.join(JPEGImages_dir, filename))
+                    # insert imagename onto trainval.txt
+                    
+                    # trainval_file.write(imagename+'\n')
 
-                # JPEGImage = image.convert('RGB')
-                # JPEGImage.save(os.path.join(JPEGImages_dir, filename))
-                image.save(os.path.join(JPEGImages_dir, filename))
+                    # print image
+                    # print(os.path.join(JPEGImages_dir, filename))
 
+                    # JPEGImage = image.convert('RGB')
+                    # JPEGImage.save(os.path.join(JPEGImages_dir, filename))
+                    image.save(os.path.join(JPEGImages_dir, filename))
+        except:
+            pass
+
+for model in models:
+    labels_file.write("\n".join(model))
 
 print('Begin XML generator')
 vals = []
@@ -110,7 +117,9 @@ for fn in list(sorted(os.listdir('JPEGImages'))):
     with open(f'Annotations/{fn_no_ext}.xml', 'w') as f:
         image = Image.open(os.path.join(JPEGImages_dir, fn))
 
-        f.write(xml.render(fn, __basename__, fn.split('-')[0], im_size=(image.size[0], image.size[1]), im_min=(1, 1), im_max=(image.size[0]-1, image.size[1]-1)))
+        print(image.size)
+
+        f.write(xml.render(fn, __basename__, fn.split('-')[0], im_size=(image.size[0], image.size[1]), im_min=(50, 50), im_max=(image.size[0]-100, image.size[1]-100)))
     vals.append(fn_no_ext)
     print(f'\r{fn}', end='')
 
@@ -124,3 +133,5 @@ print("Done!")
 
 trainval_file.close()
 labels_file.close()
+
+# print(list(sorted(os.scandir(model_dir))))
